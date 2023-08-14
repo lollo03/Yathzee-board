@@ -93,7 +93,7 @@ function computeScore(player) {
           <button :class="{ red: game[y - 2][x - 2] == -1 }" v-else-if="type[x - 1] == 2" @click="openNumberMenu(y - 2, x - 2)">
             <span v-if="game[y - 2][x - 2] != -1">{{ game[y - 2][x - 2] }}</span>
           </button>
-          <span v-else-if="type[x - 1] == 0"> {{ y - 1 }} </span>
+          <b v-else-if="type[x - 1] == 0"> {{ y - 1 }} </b>
           <button @click="computeScore(y - 2)" v-else-if="type[x - 1] == 3">
             <span v-if="score[y - 2] == -1">Grand total</span>
             <span v-else>{{ score[y - 2] }}</span>
@@ -105,6 +105,10 @@ function computeScore(player) {
 </template>
 
 <style>
+b {
+  font-weight: bold;
+}
+
 .red {
   background-color: red;
 }
