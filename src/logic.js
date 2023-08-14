@@ -21,3 +21,10 @@ export function loadGame() {
     return JSON.parse(localStorage.getItem("game"))
 }
 //game -> players(array) -> punteggio (array)
+
+export function saveNames(names) {
+    localStorage.setItem("names", JSON.stringify(names));
+}
+export function loadNames() {
+    return JSON.parse(localStorage.getItem("names"))
+}

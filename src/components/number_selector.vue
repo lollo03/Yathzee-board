@@ -67,7 +67,7 @@ function reduce10() {
 }
 
 button {
-  background-color: green; /* Green */
+  background-color: #622f8a; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -80,7 +80,6 @@ button {
   transition: 500ms;
 }
 button:hover {
-  filter: hue-rotate(90deg);
   transform: scale(1.2);
 }
 </style>

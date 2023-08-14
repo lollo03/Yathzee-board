@@ -1,16 +1,19 @@
 <script setup>
-import { labels, type, rows, loadGame, saveGame, multiplier } from "../logic";
+import { labels, type, rows, loadGame, saveGame, multiplier, loadNames, saveNames } from "../logic";
 import { ref, watch } from "vue";
 import numberMenu from "./number_selector.vue";
 import toggleMenu from "./toggle_selector.vue";
+import nameSelector from "./name_selector.vue";
 
 var players = parseInt(localStorage.getItem("players")) + 1;
+const playerNames = ref(loadNames());
 const game = ref(loadGame());
 const isNumberMenu = ref(0);
 const isToggleMenu = ref(0);
 const isShadow = ref(0);
+const isNameMenu = ref(0);
 
-var yModified, xModified;
+var yModified, xModified, playerName, playerIndex;
 
 const score = ref([]);
 for (var i = 0; i < players - 1; i++) {
@@ -31,6 +34,13 @@ function openToggleMenu(y, x) {
   xModified = x;
 }
 
+function openNameMenu(player) {
+  isNameMenu.value = 1;
+  isShadow.value = 1;
+  playerName = playerNames.value[player];
+  playerIndex = player;
+}
+
 function confirmToggle(value) {
   game.value[yModified][xModified] = value;
   saveGame(game.value);
@@ -42,6 +52,13 @@ function confirmNumber(value) {
   game.value[yModified][xModified] = value;
   saveGame(game.value);
   isNumberMenu.value = 0;
+  isShadow.value = 0;
+}
+
+function confirmName(value) {
+  playerNames.value[playerIndex] = value;
+  saveNames(playerNames.value);
+  isNameMenu.value = 0;
   isShadow.value = 0;
 }
 
@@ -82,10 +99,11 @@ function computeScore(player) {
       v-if="isToggleMenu"
       class=""
     />
+    <nameSelector v-if="isNameMenu" :playerName="playerName" @confirm="confirmName" />
     <table :class="{ shadow: isShadow }">
       <tr v-for="x in rows">
         <th v-for="y in players">
-          <span v-if="y - 1 == 0">{{ labels[x - 1] }}</span>
+          <b v-if="y - 1 == 0">{{ labels[x - 1] }}</b>
           <button :class="{ red: game[y - 2][x - 2] == -1 }" v-else-if="type[x - 1] == 1" @click="openToggleMenu(y - 2, x - 2)">
             <span v-if="game[y - 2][x - 2] == 0"> 0 </span>
             <span v-if="game[y - 2][x - 2] == 1"> X </span>
@@ -93,7 +111,7 @@ function computeScore(player) {
           <button :class="{ red: game[y - 2][x - 2] == -1 }" v-else-if="type[x - 1] == 2" @click="openNumberMenu(y - 2, x - 2)">
             <span v-if="game[y - 2][x - 2] != -1">{{ game[y - 2][x - 2] }}</span>
           </button>
-          <b v-else-if="type[x - 1] == 0"> {{ y - 1 }} </b>
+          <b class="bigClick" @click="openNameMenu(x - 1)" v-else-if="type[x - 1] == 0"> {{ playerNames[y - 2] }} </b>
           <button @click="computeScore(y - 2)" v-else-if="type[x - 1] == 3">
             <span v-if="score[y - 2] == -1">Grand total</span>
             <span v-else>{{ score[y - 2] }}</span>
@@ -104,13 +122,21 @@ function computeScore(player) {
   </div>
 </template>
 
-<style>
+<style scoped>
+.bigClick {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 5em;
+  margin: -5em;
+}
+
 b {
   font-weight: bold;
 }
 
 .red {
-  background-color: red;
+  background-color: #5577fa;
 }
 
 .shadow {
@@ -124,16 +150,16 @@ table {
 table,
 th,
 td {
-  border: 1px solid white;
+  border: 1px solid black;
   border-collapse: collapse;
 }
 th,
 td {
-  background-color: #96d4d4;
+  background-color: #b7c4f7;
 }
 
 button {
-  background-color: green; /* Green */
+  background-color: #622f8a; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -146,7 +172,6 @@ button {
   transition: 500ms;
 }
 button:hover {
-  filter: hue-rotate(90deg);
   transform: scale(1.2);
 }
 .menu {

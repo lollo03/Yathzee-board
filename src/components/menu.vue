@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { initGame } from "../logic";
+import { initGame, saveNames } from "../logic";
 
 const emit = defineEmits(["setPlayers"]);
 const players = ref(2);
@@ -22,6 +22,11 @@ function setPlayers() {
   localStorage.setItem("game", null);
   initGame(players.value);
   emit("setPlayers");
+  var names = [];
+  for (var i = 1; i <= players.value; i++) {
+    names.push(i);
+  }
+  saveNames(names);
 }
 function reset() {
   previousGame.value = 0;
@@ -66,7 +71,7 @@ td {
   background-color: #96d4d4;
 }
 button {
-  background-color: green; /* Green */
+  background-color: #622f8a; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -79,7 +84,6 @@ button {
   transition: 500ms;
 }
 button:hover {
-  filter: hue-rotate(90deg);
   transform: scale(1.2);
 }
 .menu {

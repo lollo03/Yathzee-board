@@ -47,7 +47,7 @@ function setPlayers() {
 @media (prefers-color-scheme: dark) {
   th,
   td {
-    background-color: #3d0235 !important;
+    background-color: #38428a !important;
   }
   .container {
     background-color: black;
