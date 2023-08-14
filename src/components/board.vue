@@ -1,0 +1,163 @@
+<script setup>
+import { labels, type, rows, loadGame, saveGame, multiplier } from "../logic";
+import { ref, watch } from "vue";
+import numberMenu from "./number_selector.vue";
+import toggleMenu from "./toggle_selector.vue";
+
+var players = parseInt(localStorage.getItem("players")) + 1;
+const game = ref(loadGame());
+const isNumberMenu = ref(0);
+const isToggleMenu = ref(0);
+const isShadow = ref(0);
+
+var yModified, xModified;
+
+const score = ref([]);
+for (var i = 0; i < players - 1; i++) {
+  score.value.push(-1);
+}
+
+function openNumberMenu(y, x) {
+  isNumberMenu.value = 1;
+  isShadow.value = 1;
+  yModified = y;
+  xModified = x;
+}
+
+function openToggleMenu(y, x) {
+  isToggleMenu.value = 1;
+  isShadow.value = 1;
+  yModified = y;
+  xModified = x;
+}
+
+function confirmToggle(value) {
+  game.value[yModified][xModified] = value;
+  saveGame(game.value);
+  isToggleMenu.value = 0;
+  isShadow.value = 0;
+}
+
+function confirmNumber(value) {
+  game.value[yModified][xModified] = value;
+  saveGame(game.value);
+  isNumberMenu.value = 0;
+  isShadow.value = 0;
+}
+
+function computeScore(player) {
+  var x = 0;
+  for (var i = 1; i < rows - 1; i++) {
+    if (type[i] == 1 || type[i] == 2) {
+      //solo se è punteggio
+      if (game.value[player][i] == -1) {
+        score.value[player] = -1;
+        return;
+      }
+      //punteggio va moltiplicato in alcuni casi
+      x += parseInt(game.value[player][i - 1]) * multiplier[i];
+    }
+  }
+  score.value[player] = x;
+}
+</script>
+
+<template>
+  <div class="board">
+    <numberMenu
+      @close="
+        isNumberMenu = 0;
+        isShadow = 0;
+      "
+      @confirm="confirmNumber"
+      v-if="isNumberMenu"
+      class=""
+    />
+    <toggleMenu
+      @close="
+        isToggleMenu = 0;
+        isShadow = 0;
+      "
+      @confirm="confirmToggle"
+      v-if="isToggleMenu"
+      class=""
+    />
+    <table :class="{ shadow: isShadow }">
+      <tr v-for="x in rows">
+        <th v-for="y in players">
+          <span v-if="y - 1 == 0">{{ labels[x - 1] }}</span>
+          <button :class="{ red: game[y - 2][x - 2] == -1 }" v-else-if="type[x - 1] == 1" @click="openToggleMenu(y - 2, x - 2)">
+            <span v-if="game[y - 2][x - 2] == 0"> 0 </span>
+            <span v-if="game[y - 2][x - 2] == 1"> X </span>
+          </button>
+          <button :class="{ red: game[y - 2][x - 2] == -1 }" v-else-if="type[x - 1] == 2" @click="openNumberMenu(y - 2, x - 2)">
+            <span v-if="game[y - 2][x - 2] != -1">{{ game[y - 2][x - 2] }}</span>
+          </button>
+          <span v-else-if="type[x - 1] == 0"> {{ y - 1 }} </span>
+          <button @click="computeScore(y - 2)" v-else-if="type[x - 1] == 3">
+            <span v-if="score[y - 2] == -1">Grand total</span>
+            <span v-else>{{ score[y - 2] }}</span>
+          </button>
+        </th>
+      </tr>
+    </table>
+  </div>
+</template>
+
+<style>
+.red {
+  background-color: red;
+}
+
+.shadow {
+  transition: 0.5s;
+  filter: brightness(0.5);
+  filter: blur(0.5);
+}
+table {
+  width: 100%;
+}
+table,
+th,
+td {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+th,
+td {
+  background-color: #96d4d4;
+}
+
+button {
+  background-color: green; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
+  border-radius: 5px;
+  transition: 500ms;
+}
+button:hover {
+  filter: hue-rotate(90deg);
+  transform: scale(1.2);
+}
+.menu {
+  width: 100%;
+  display: flex;
+}
+
+.board {
+  width: 90vw;
+  overflow-y: scroll;
+}
+@media only screen and (max-width: 600px) {
+  .board {
+    width: 100vw;
+    overflow-y: scroll;
+  }
+}
+</style>
