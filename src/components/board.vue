@@ -127,8 +127,8 @@ function computeScore(player) {
   display: inline-block;
   position: relative;
   z-index: 1;
-  padding: 5em;
-  margin: -5em;
+  padding: 1em;
+  margin: -1em;
 }
 
 b {
