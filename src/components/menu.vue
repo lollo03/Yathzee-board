@@ -41,13 +41,16 @@ function loadGame() {
 <template>
   <div class="menu">
     <div class="newgame" v-if="previousGame == 0">
-      <button @click="decrease()">-</button>
+      <div style="margin-top: 2em"><h3>Insert number of player(s):</h3></div>
+      <div>
+        <button @click="decrease()">-</button>
 
-      <button>{{ players }}</button>
+        <button>{{ players }}</button>
 
-      <button @click="players++">+</button>
+        <button @click="players++">+</button>
 
-      <button @click="setPlayers">Start!</button>
+        <button @click="setPlayers">Start!</button>
+      </div>
     </div>
     <div class="oldgame" v-else>
       <button @click="loadGame">Resume previous game</button>
@@ -70,21 +73,10 @@ th,
 td {
   background-color: #96d4d4;
 }
-button {
-  background-color: #622f8a; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px;
-  border-radius: 5px;
-  transition: 500ms;
-}
-button:hover {
-  transform: scale(1.2);
+.newgame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .menu {
   width: 100%;
