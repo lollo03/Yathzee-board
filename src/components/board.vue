@@ -12,6 +12,7 @@ const isNumberMenu = ref(0);
 const isToggleMenu = ref(0);
 const isShadow = ref(0);
 const isNameMenu = ref(0);
+const currentValue = ref(0);
 
 var yModified, xModified, playerName, playerIndex;
 
@@ -21,6 +22,7 @@ for (var i = 0; i < players - 1; i++) {
 }
 
 function openNumberMenu(y, x) {
+  currentValue.value = game.value[y][x];
   isNumberMenu.value = 1;
   isShadow.value = 1;
   yModified = y;
@@ -87,6 +89,7 @@ function computeScore(player) {
         isShadow = 0;
       "
       @confirm="confirmNumber"
+      :currentValue="currentValue"
       v-if="isNumberMenu"
       class=""
     />
@@ -123,6 +126,10 @@ function computeScore(player) {
 </template>
 
 <style scoped>
+span {
+  margin: 0px;
+}
+
 .bigClick {
   display: inline-block;
   position: relative;
@@ -158,22 +165,6 @@ td {
   background-color: #b7c4f7;
 }
 
-button {
-  background-color: #622f8a; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px;
-  border-radius: 5px;
-  transition: 500ms;
-}
-button:hover {
-  transform: scale(1.2);
-}
 .menu {
   width: 100%;
   display: flex;

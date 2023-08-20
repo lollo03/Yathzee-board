@@ -29,9 +29,9 @@ function setPlayers() {
       <small>Questo sito per funzionare utilizza il <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">local storage</a> ma nessun cookie!</small>
       <br />
       <hr />
-      <small>Creato con &hearts; da Lorenzo Andreasi</small>
+      <small>Creato col &hearts; da Lorenzo Andreasi</small>
       (<a href="https://github.com/lollo03">GitHub</a>, <a href="https://lollo03.github.io">Portfolio</a>). <br />
-      <small class="text-muted">Copyleft &#127279; Lorenzo Andreasi, 2023. <i>Some rights reserved.</i></small> <br />
+      <small class="text-muted">Copyleft &#127279; Lorenzo Andreasi, {{ new Date().getFullYear() }}. <i>Some rights reserved.</i></small> <br />
     </div>
   </div>
 </template>

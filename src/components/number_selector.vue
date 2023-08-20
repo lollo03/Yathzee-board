@@ -1,18 +1,31 @@
 <script setup>
 import { ref } from "vue";
-const x = ref(5);
+const props = defineProps(["currentValue"]);
 
+const x = ref(5);
+if (props.currentValue != -1) {
+  x.value = props.currentValue;
+}
 function reduce() {
-  if (x.value == -1) {
+  if (x.value == 0) {
     return;
   }
   x.value--;
 }
 function reduce10() {
-  if (x.value <= 9) {
+  if (x.value <= 10) {
+    x.value = 0;
     return;
   }
   x.value -= 10;
+}
+
+function increase10() {
+  if (x.value + 10 > 30) {
+    x.value = 30;
+    return;
+  }
+  x.value += 10;
 }
 </script>
 
@@ -23,11 +36,11 @@ function reduce10() {
       <button @click="reduce()">-</button>
       <h1>{{ x }}</h1>
       <button @click="x++">+</button>
-      <button @click="x += 10">+10</button>
+      <button @click="increase10()">+10</button>
     </div>
     <div class="row">
       <button @click="$emit('close')">Close</button>
-      <button class="red" @click="x = -1">Delete</button>
+      <button class="red" @click="$emit('confirm', -1)">Delete</button>
       <button @click="$emit('confirm', x)">Confirm</button>
     </div>
   </div>
