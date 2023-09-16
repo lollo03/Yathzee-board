@@ -4,6 +4,7 @@ import { ref, watch } from "vue";
 import numberMenu from "./number_selector.vue";
 import toggleMenu from "./toggle_selector.vue";
 import nameSelector from "./name_selector.vue";
+import axios from "axios";
 
 var players = parseInt(localStorage.getItem("players")) + 1;
 const playerNames = ref(loadNames());
@@ -78,6 +79,7 @@ function computeScore(player) {
     }
   }
   score.value[player] = x;
+  axios.post("https://api.lolloandr.com/recordscore", { score: x });
 }
 </script>
 
