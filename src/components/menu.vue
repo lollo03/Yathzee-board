@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { initGame, saveNames } from "../logic";
 import axios from "axios";
-import MD5 from "crypto-js/MD5";
+import crypto from "crypto-js";
 
 const emit = defineEmits(["setPlayers"]);
 const players = ref(2);
@@ -25,7 +25,7 @@ getStats();
 async function ping() {
   let uid = "";
   if (!JSON.parse(localStorage.getItem("uid"))) {
-    uid = MD5(new Date().valueOf().toString()).toString();
+    uid = crypto.MD5(new Date().valueOf().toString()).toString();
     localStorage.setItem("uid", JSON.stringify(uid));
   } else {
     uid = JSON.parse(localStorage.getItem("uid"));
