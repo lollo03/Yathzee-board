@@ -17,9 +17,9 @@ function setPlayers() {
       <top style="text-align: center" />
     </div>
     <br />
-    <div>
-      <gamemenu v-if="isplayerset == 0" @setPlayers="setPlayers()" />
-    </div>
+
+    <gamemenu v-if="isplayerset == 0" @setPlayers="setPlayers()" />
+
     <br />
     <div>
       <board v-if="isplayerset == 1" />

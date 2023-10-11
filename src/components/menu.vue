@@ -4,6 +4,8 @@ import { initGame, saveNames } from "../logic";
 import axios from "axios";
 import crypto from "crypto-js";
 
+import counter from "./counter.vue";
+
 const emit = defineEmits(["setPlayers"]);
 const players = ref(2);
 const previousGame = ref(0);
@@ -71,12 +73,14 @@ function loadGame() {
   <div class="menu">
     <div class="newgame" v-if="previousGame == 0">
       <div style="margin-top: 2em"><h3>Insert number of player(s):</h3></div>
-      <div>
-        <button @click="decrease()">-</button>
+      <div style="display: flex; align-items: center; flex-direction: column">
+        <div>
+          <button @click="decrease()">-</button>
 
-        <button>{{ players }}</button>
+          <button>{{ players }}</button>
 
-        <button @click="players++">+</button>
+          <button @click="players++">+</button>
+        </div>
 
         <button @click="setPlayers">Start!</button>
       </div>
@@ -85,40 +89,32 @@ function loadGame() {
       <button @click="loadGame">Resume previous game</button>
       <button @click="reset()">Start new game</button>
     </div>
-    <div class="stats" v-if="!loading">
-      <h3>Statistics</h3>
-      <table>
-        <tr>
-          <th style="font-weight: bold">Games Played</th>
-          <th>{{ stats.data.game_played }}</th>
-        </tr>
-        <tr>
-          <th style="font-weight: bold">Unique players</th>
-          <th>{{ stats.data.unique_visitator }}</th>
-        </tr>
-        <tr>
-          <th style="font-weight: bold">Average score</th>
-          <th>{{ stats.data.average_score }}</th>
-        </tr>
-      </table>
-    </div>
+  </div>
+  <div class="counters" v-if="!loading">
+    <counter name="Games Played" :value="stats.data.game_played" />
+    <counter name="Unique players" :value="stats.data.unique_visitator" />
+    <counter name="Average score" :value="stats.data.average_score" />
+  </div>
+  <div class="counters" v-else>
+    <counter name="Games Played" value="..." />
+    <counter name="Unique players" value="..." />
+    <counter name="Average score" value="..." />
   </div>
 </template>
 
 <style>
-table {
-  width: 100%;
+.counters {
+  margin-top: 10%;
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
 }
-table,
-th,
-td {
-  border: 1px solid white;
-  border-collapse: collapse;
+
+.oldgame {
+  display: flex;
+  align-items: center;
 }
-th,
-td {
-  background-color: #96d4d4;
-}
+
 .newgame {
   display: flex;
   flex-direction: column;
@@ -128,11 +124,17 @@ td {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-.stats {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+  /*Big smartphones [426px -> 600px]*/
+  .counters {
+    flex-direction: column;
+    width: 90%;
+  }
+  .oldgame {
+    flex-direction: column;
+  }
 }
 </style>
