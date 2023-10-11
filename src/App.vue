@@ -2,6 +2,7 @@
 import top from "./components/top.vue";
 import board from "./components/board.vue";
 import gamemenu from "./components/menu.vue";
+import diceSelector from "./components/dice_selector.vue";
 import { ref } from "vue";
 
 const isplayerset = ref(0);

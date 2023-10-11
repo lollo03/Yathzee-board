@@ -41,7 +41,7 @@ function increase10() {
     <div class="row">
       <button @click="$emit('close')">Close</button>
       <button class="red" @click="$emit('confirm', -1)">Delete</button>
-      <button @click="$emit('confirm', x)">Confirm</button>
+      <button style="background-color: #1aa400" @click="$emit('confirm', x)">Confirm</button>
     </div>
   </div>
 </template>

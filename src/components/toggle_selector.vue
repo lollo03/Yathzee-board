@@ -6,8 +6,8 @@ const x = ref(-1);
 <template>
   <div class="popup">
     <div class="row">
-      <button @click="$emit('confirm', 1)">Yes</button>
-      <button @click="$emit('confirm', -1)">No</button>
+      <button style="background-color: #1aa400" @click="$emit('confirm', 1)">Yes</button>
+      <button style="background-color: #ffbf00" @click="$emit('confirm', -1)">No</button>
     </div>
     <div class="row">
       <button @click="$emit('close')">Close</button>
