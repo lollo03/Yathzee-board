@@ -1,8 +1,5 @@
 <script setup>
-import { ref } from "vue";
 const props = defineProps(["mul"]);
-
-const x = ref(5);
 </script>
 
 <template>
