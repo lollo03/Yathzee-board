@@ -5,6 +5,7 @@ import numberMenu from "./number_selector.vue";
 import toggleMenu from "./toggle_selector.vue";
 import nameSelector from "./name_selector.vue";
 import diceMenu from "./dice_selector.vue";
+import diceTypeMenu from "./diceType_selector.vue";
 import axios from "axios";
 
 var players = parseInt(localStorage.getItem("players")) + 1;
@@ -15,6 +16,7 @@ const isToggleMenu = ref(0);
 const isShadow = ref(0);
 const isNameMenu = ref(0);
 const isDiceMenu = ref(0);
+const isDiceTypeMenu = ref(0);
 const currentValue = ref(0);
 
 var yModified, xModified, playerName, playerIndex;
@@ -53,6 +55,13 @@ function openDiceMenu(y, x) {
   xModified = x;
 }
 
+function openDiceTypeMenu(y, x) {
+  isDiceTypeMenu.value = 1;
+  isShadow.value = 1;
+  yModified = y;
+  xModified = x;
+}
+
 function confirmToggle(value) {
   game.value[yModified][xModified] = value;
   saveGame(game.value);
@@ -78,6 +87,13 @@ function confirmDice(value) {
   game.value[yModified][xModified] = value;
   saveGame(game.value);
   isDiceMenu.value = 0;
+  isShadow.value = 0;
+}
+
+function confirmDiceType(value) {
+  game.value[yModified][xModified] = value;
+  saveGame(game.value);
+  isDiceTypeMenu.value = 0;
   isShadow.value = 0;
 }
 
@@ -130,6 +146,16 @@ function computeScore(player) {
       v-if="isDiceMenu"
       class=""
     />
+    <diceTypeMenu
+      @close="
+        isDiceTypeMenu = 0;
+        isShadow = 0;
+      "
+      @confirm="confirmDiceType"
+      :mul="xModified + 1"
+      v-if="isDiceTypeMenu"
+      class=""
+    />
     <nameSelector v-if="isNameMenu" :playerName="playerName" @confirm="confirmName" />
     <table :class="{ shadow: isShadow }">
       <tr v-for="x in rows">
@@ -143,6 +169,9 @@ function computeScore(player) {
             <span v-if="game[y - 2][x - 2] != -1">{{ game[y - 2][x - 2] }}</span>
           </button>
           <button :class="{ red: game[y - 2][x - 2] == -1 }" v-else-if="type[x - 1] == 4" @click="openDiceMenu(y - 2, x - 2)">
+            <span v-if="game[y - 2][x - 2] != -1">{{ game[y - 2][x - 2] }}</span>
+          </button>
+          <button :class="{ red: game[y - 2][x - 2] == -1 }" v-else-if="type[x - 1] == 5" @click="openDiceTypeMenu(y - 2, x - 2)">
             <span v-if="game[y - 2][x - 2] != -1">{{ game[y - 2][x - 2] }}</span>
           </button>
           <b class="bigClick" @click="openNameMenu(y - 2)" v-else-if="type[x - 1] == 0"> {{ playerNames[y - 2] }} </b>

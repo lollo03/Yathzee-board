@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export const labels = ["Player N.", "Aces", "Twos", "Threes", "Fours", "Fives", "Sixes", "3 of a kind", "4 of a kind", "Full house", "Sm. Straight", "Lg. Straight", "Yathzee", "Chance", "Total"];
-export const type = [0, 4, 4, 4, 4, 4, 4, 2, 2, 1, 1, 1, 1, 2, 3]
-// 0 = player name, 1=button, 2=number, 3=total 4=diceSelector 
+export const type = [0, 4, 4, 4, 4, 4, 4, 5, 5, 1, 1, 1, 1, 2, 3]
+// 0 = player name, 1=button, 2=number, 3=total 4=diceSelector 5=diceType
 export const multiplier = [0, 1, 1, 1, 1, 1, 1, 1, 1, 25, 30, 40, 50, 1, 0]
 export const rows = 15; //nome + 6 numeri + 7 speciali + score
 export function initGame(players) {
