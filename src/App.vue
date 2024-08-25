@@ -27,7 +27,7 @@ function setPlayers() {
     </div>
     <div>
       <br />
-      <small>Questo sito per funzionare utilizza il <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">local storage</a> ma nessun cookie!</small>
+      <small>Questo sito per funzionare utilizza il <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">local storage</a>. Sono raccolte statistiche anonime sull'utilizzo.</small>
       <br />
       <hr />
       <small>Creato col &hearts; da Lorenzo Andreasi</small>
